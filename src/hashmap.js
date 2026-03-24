@@ -1,90 +1,144 @@
 export default class HashMap {
-  constructor(initialCapacity = 16, loadFactor = 0.75) {
-    this.capacity = initialCapacity;
-    this.loadFactor = loadFactor;
-    this.size = 0;
+  constructor(capacity = 16, loadFactor = 0.75) {
+    this.capacity = capacity; // total number of buckets
+    this.loadFactor = loadFactor; // when to resize
+    this.size = 0; // number of key-value pairs
     this.buckets = Array(this.capacity)
-      .fill(null)
-      .map(() => []);
+      .fill()
+      .map(() => []); // initialize each bucket as empty array
   }
 
+  // Simple string hash function
   hash(key) {
     let hashCode = 0;
-    const primeNumber = 31;
+    const prime = 31;
 
     for (let i = 0; i < key.length; i++) {
-      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
+      hashCode = (hashCode * prime + key.charCodeAt(i)) % this.capacity;
     }
+
     return hashCode;
   }
 
+  // Add or update a key-value pair
   set(key, value) {
-    let bucketIndex = this.hash(key); // find bucket index using hash function
-    const bucket = this.buckets[bucketIndex];
+    const index = this.hash(key);
+    const bucket = this.buckets[index];
 
-    for (let i = 0; i < bucket.length; i++) {
-      let entry = bucket[i];
-
-      if (entry.key === key) {
-        entry.value = value;
+    // Check if key already exists
+    for (let pair of bucket) {
+      if (pair[0] === key) {
+        pair[1] = value; // update value
         return;
       }
     }
 
-    bucket.push({ key, value });
-    this.size++; // increment size since we have a new key
+    // Key not found → add new pair
+    bucket.push([key, value]);
+    this.size++;
+
+    // Optional: resize if load factor exceeded (not required yet)
+    // if (this.size / this.capacity > this.loadFactor) {
+    //   this.resize();
+    // }
   }
 
+  // Retrieve value by key
   get(key) {
-    let bucketIndex = this.hash(key);
+    const index = this.hash(key);
+    const bucket = this.buckets[index];
 
-    const bucket = this.buckets[bucketIndex];
-    for (let i = 0; i < bucket.length; i++) {
-      let entry = bucket[i];
-
-      if (entry.key === key) {
-        return entry.value;
-      }
+    for (const pair of bucket) {
+      if (pair[0] === key) return pair[1];
     }
 
-    return undefined;
+    return undefined; // key not found
   }
 
+  // Check if key exists
   has(key) {
-    let bucketIndex = this.hash(key);
-    let bucket = this.buckets[bucketIndex];
+    const index = this.hash(key);
+    const bucket = this.buckets[index];
 
-    for (let i = 0; i < bucket.length; i++) {
-      let entry = bucket[i];
-
-      if (entry.key === key) {
-        return true;
-      }
-    }
-
-    return false;
+    return bucket.some((pair) => pair[0] === key);
   }
 
+  // Remove a key-value pair
   remove(key) {
-    let bucketIndex = this.hash(key);
-    let bucket = this.buckets[bucketIndex];
+    const index = this.hash(key);
+    const bucket = this.buckets[index];
 
     for (let i = 0; i < bucket.length; i++) {
-      if (bucket[i].key === key) {
+      if (bucket[i][0] === key) {
         bucket.splice(i, 1);
         this.size--;
         return true;
       }
     }
+
     return false;
   }
 
+  // Return number of stored keys
   length() {
     return this.size;
   }
 
+  // Clear all entries
   clear() {
-    this.buckets = this.buckets.map(() => []);
+    this.buckets = Array(this.capacity)
+      .fill()
+      .map(() => []);
     this.size = 0;
   }
+
+  // Return array of all keys
+  keys() {
+    const keysArray = [];
+
+    for (const bucket of this.buckets) {
+      if (!bucket || bucket.length === 0) continue;
+
+      for (const [key, value] of bucket) {
+        keysArray.push(key);
+      }
+    }
+
+    return keysArray;
+  }
+
+  // Return array of all values
+  values() {
+    const valuesArray = [];
+
+    for (const bucket of this.buckets) {
+      if (!bucket || bucket.length === 0) continue;
+
+      for (const [key, value] of bucket) {
+        valuesArray.push(value);
+      }
+    }
+
+    return valuesArray;
+  }
+
+  // Return array of all [key, value] pairs
+  entries() {
+    const entriesArray = [];
+
+    for (const bucket of this.buckets) {
+      if (!bucket || bucket.length === 0) continue;
+
+      for (const pair of bucket) {
+        entriesArray.push(pair);
+      }
+    }
+
+    return entriesArray;
+  }
+
+  // Optional: resizing logic for later
+  // resize() { ... }
 }
+
+module.exports = HashMap;

@@ -77,4 +77,18 @@ describe("HashMap", () => {
     expect(map.has("dog")).toBe(false);
     expect(map.has("cat")).toBe(false);
   });
+
+  test("keys returns an array containing all keys", () => {
+    const map = new HashMap();
+
+    map.set("dog", "woof");
+    map.set("cat", "meow");
+    const result = map.keys();
+
+    expect(Array.isArray(result)).toBe(true);
+
+    expect(result).toContain("dog");
+    expect(result).toContain("cat");
+    expect(result.length).toBe(2);
+  });
 });
