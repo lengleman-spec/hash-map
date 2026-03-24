@@ -49,4 +49,19 @@ export default class HashMap {
 
     return undefined;
   }
+
+  has(key) {
+    let bucketIndex = this.hash(key);
+    let bucket = this.buckets[bucketIndex];
+
+    for (let i = 0; i < bucket.length; i++) {
+      let entry = bucket[i];
+
+      if (entry.key === key) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }

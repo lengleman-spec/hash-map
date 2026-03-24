@@ -1,3 +1,4 @@
+import { experiments } from "webpack";
 import HashMap from "./src/hashmap.js";
 
 describe("HashMap", () => {
@@ -32,5 +33,12 @@ describe("HashMap", () => {
 
     expect(map.get("dog")).toBe("woof");
     expect(map.get("cat")).toBe("meow");
+  });
+
+  test("has returns true if the key exists", () => {
+    map.set("dog", "woof");
+    map.set("cat", "meow");
+
+    expect(map.has("dog")).toBe(true);
   });
 });
