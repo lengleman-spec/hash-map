@@ -56,4 +56,25 @@ describe("HashMap", () => {
 
     expect(map.remove("cat")).toBe(false);
   });
+
+  test("length returns the length of array", () => {
+    const map = new HashMap();
+
+    map.set("dog", "woof");
+    map.set("cat", "meow");
+
+    expect(map.length()).toBe(2);
+  });
+
+  test("clear clears all the elements in the array", () => {
+    const map = new HashMap();
+
+    map.set("dog", "woof");
+    map.set("cat", "meow");
+
+    map.clear();
+    expect(map.length()).toBe(0);
+    expect(map.has("dog")).toBe(false);
+    expect(map.has("cat")).toBe(false);
+  });
 });

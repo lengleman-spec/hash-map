@@ -82,4 +82,9 @@ export default class HashMap {
   length() {
     return this.size;
   }
+
+  clear() {
+    this.buckets = this.buckets.map(() => []);
+    this.size = 0;
+  }
 }
