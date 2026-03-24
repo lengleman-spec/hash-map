@@ -1,8 +1,9 @@
 {
   "name": "hash-map",
   "version": "1.0.0",
-  "description": "",
+  "description": "HashMap implementation for Odin Project",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "jest"
   },
@@ -13,7 +14,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/lengleman-spec/hash-map/issues"
   },
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@babel/preset-env": "^7.29.2",
+    "babel-jest": "^30.3.0",
     "babel-loader": "^10.1.1",
     "jest": "^30.3.0",
     "webpack": "^5.105.4",
