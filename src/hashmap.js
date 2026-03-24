@@ -64,4 +64,18 @@ export default class HashMap {
 
     return false;
   }
+
+  remove(key) {
+    let bucketIndex = this.hash(key);
+    let bucket = this.buckets[bucketIndex];
+
+    for (let i = 0; i < bucket.length; i++) {
+      if (bucket[i].key === key) {
+        bucket.splice(i, 1);
+        this.size--;
+        return true;
+      }
+    }
+    return false;
+  }
 }

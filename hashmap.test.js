@@ -40,5 +40,20 @@ describe("HashMap", () => {
     map.set("cat", "meow");
 
     expect(map.has("dog")).toBe(true);
+    expect(map.has("parrot")).toBe(false);
+  });
+
+  test("remove should remove key if key is found", () => {
+    map.set("dog", "woof");
+    map.set("cat", "meow");
+
+    expect(map.remove("dog")).toBe(true);
+    expect(map.has("dog")).toBe(false);
+  });
+
+  test("remove should return false if key is not found", () => {
+    map.set("dog", "woof");
+
+    expect(map.remove("cat")).toBe(false);
   });
 });
