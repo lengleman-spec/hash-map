@@ -91,4 +91,24 @@ describe("HashMap", () => {
     expect(result).toContain("cat");
     expect(result.length).toBe(2);
   });
+
+  test("entries returns an array with all key-value pairs", () => {
+    const map = new HashMap();
+
+    map.set("dog", "woof");
+    map.set("cat", "meow");
+
+    const result = map.entries();
+
+    expect(Array.isArray(result)).toBe(true);
+
+    expect(result).toEqual(
+      expect.arrayContaining([
+        ["dog", "woof"],
+        ["cat", "meow"],
+      ]),
+    );
+
+    expect(result.length).toBe(2);
+  });
 });

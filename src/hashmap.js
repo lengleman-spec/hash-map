@@ -1,14 +1,13 @@
 export default class HashMap {
   constructor(capacity = 16, loadFactor = 0.75) {
-    this.capacity = capacity; // total number of buckets
-    this.loadFactor = loadFactor; // when to resize
-    this.size = 0; // number of key-value pairs
+    this.capacity = capacity;
+    this.loadFactor = loadFactor;
+    this.size = 0;
     this.buckets = Array(this.capacity)
       .fill()
-      .map(() => []); // initialize each bucket as empty array
+      .map(() => []);
   }
 
-  // Simple string hash function
   hash(key) {
     let hashCode = 0;
     const prime = 31;
@@ -20,7 +19,6 @@ export default class HashMap {
     return hashCode;
   }
 
-  // Add or update a key-value pair
   set(key, value) {
     const index = this.hash(key);
     const bucket = this.buckets[index];
@@ -28,7 +26,7 @@ export default class HashMap {
     // Check if key already exists
     for (let pair of bucket) {
       if (pair[0] === key) {
-        pair[1] = value; // update value
+        pair[1] = value;
         return;
       }
     }
@@ -36,11 +34,6 @@ export default class HashMap {
     // Key not found → add new pair
     bucket.push([key, value]);
     this.size++;
-
-    // Optional: resize if load factor exceeded (not required yet)
-    // if (this.size / this.capacity > this.loadFactor) {
-    //   this.resize();
-    // }
   }
 
   // Retrieve value by key
@@ -52,10 +45,9 @@ export default class HashMap {
       if (pair[0] === key) return pair[1];
     }
 
-    return undefined; // key not found
+    return undefined;
   }
 
-  // Check if key exists
   has(key) {
     const index = this.hash(key);
     const bucket = this.buckets[index];
@@ -63,7 +55,6 @@ export default class HashMap {
     return bucket.some((pair) => pair[0] === key);
   }
 
-  // Remove a key-value pair
   remove(key) {
     const index = this.hash(key);
     const bucket = this.buckets[index];
@@ -79,7 +70,6 @@ export default class HashMap {
     return false;
   }
 
-  // Return number of stored keys
   length() {
     return this.size;
   }
@@ -107,12 +97,11 @@ export default class HashMap {
     return keysArray;
   }
 
-  // Return array of all values
   values() {
     const valuesArray = [];
 
     for (const bucket of this.buckets) {
-      if (!bucket || bucket.length === 0) continue;
+      if (!bucket || bucket.length === 0) continue; // skip empty buckets
 
       for (const [key, value] of bucket) {
         valuesArray.push(value);
@@ -122,7 +111,6 @@ export default class HashMap {
     return valuesArray;
   }
 
-  // Return array of all [key, value] pairs
   entries() {
     const entriesArray = [];
 
@@ -133,12 +121,8 @@ export default class HashMap {
         entriesArray.push(pair);
       }
     }
-
     return entriesArray;
   }
-
-  // Optional: resizing logic for later
-  // resize() { ... }
 }
 
 module.exports = HashMap;
