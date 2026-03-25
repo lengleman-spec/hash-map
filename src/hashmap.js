@@ -123,6 +123,23 @@ export default class HashMap {
     }
     return entriesArray;
   }
+
+  // Rehashing
+  resize() {
+    let oldBuckets = this.buckets;
+    this.capacity *= 2;
+
+    this.buckets = new Array(this.capacity).fill().map(() => []);
+    this.size = 0;
+
+    for (const bucket of oldBuckets) {
+      if (!bucket || bucket.length === 0) continue;
+
+      for (const pair of bucket) {
+        this.set(pair[0], pair[1]);
+      }
+    }
+  }
 }
 
 module.exports = HashMap;
